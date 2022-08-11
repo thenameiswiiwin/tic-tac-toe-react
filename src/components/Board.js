@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import Squares from './Squares';
+import { useLocalStorageState } from '../hooks/useLocalStorageState';
 import {
   calculateStatus,
   calculateNextValue,
@@ -7,13 +7,10 @@ import {
 } from '../utilites/index.js';
 
 function Board() {
-  const [squares, setSquares] = useState(
-    () => window.localStorage.getItem('squares') || Array(9).fill(null)
+  const [squares, setSquares] = useLocalStorageState(
+    'squares',
+    Array(9).fill(null)
   );
-
-  useEffect(() => {
-    window.localStorage.setItem('squares', JSON.stringify(squares));
-  }, [squares]);
 
   const nextValue = calculateNextValue(squares);
   const winner = calculateWinner(squares);
