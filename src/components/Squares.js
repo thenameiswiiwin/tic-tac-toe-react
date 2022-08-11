@@ -1,4 +1,4 @@
-function Squares({renderSquare}) {
+function Squares({ renderSquare }) {
   return (
     <div>
       <div className="board-row">
