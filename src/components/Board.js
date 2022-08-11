@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Squares from './Squares';
 import {
   calculateStatus,
@@ -7,20 +7,26 @@ import {
 } from '../utilites/index.js';
 
 function Board() {
-  const[squares, setSquares] = useState(Array(9).fill(null));
+  const [squares, setSquares] = useState(
+    () => window.localStorage.getItem('squares') || Array(9).fill(null)
+  );
+
+  useEffect(() => {
+    window.localStorage.setItem('squares', JSON.stringify(squares));
+  }, [squares]);
 
   const nextValue = calculateNextValue(squares);
   const winner = calculateWinner(squares);
   const status = calculateStatus(winner, squares, nextValue);
 
   const selectSquare = (square) => {
-    if (winner || squares[square]) return
-    const copySquares = [...squares]
-    copySquares[square] = nextValue
-    setSquares(copySquares)
+    if (winner || squares[square]) return;
+    const copySquares = [...squares];
+    copySquares[square] = nextValue;
+    setSquares(copySquares);
   };
 
-  const restart = () => setSquares(Array(9).fill(null))
+  const restart = () => setSquares(Array(9).fill(null));
 
   const renderSquare = (i) => {
     return (
